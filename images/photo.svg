@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd1e0"/>
+      <stop offset="1" stop-color="#f48fb1"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#sky)"/>
+  <circle cx="200" cy="260" r="70" fill="#fff7fa"/>
+  <path d="M0 330 L90 250 L170 320 L260 220 L400 340 V500 H0 Z" fill="#ec407a"/>
+  <path d="M0 390 L120 320 L230 390 L320 340 L400 380 V500 H0 Z" fill="#ad1457"/>
+  <text x="200" y="460" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#fff7fa">Ảnh của bạn</text>
+</svg>
