@@ -11,16 +11,21 @@ async function loadPerson() {
   if (!id) return splitWords();
   try {
     // no-cache: luôn hỏi lại server, tránh dùng dữ liệu cũ trỏ tới ảnh đã bị đổi tên/xoá
-    const res = await fetch('data/people.json', { cache: 'no-cache' });
-    const people = await res.json();
+    const getJSON = (url) => fetch(url, { cache: 'no-cache' }).then((res) => res.json());
+    const [people, wishes] = await Promise.all([
+      getJSON('data/people.json'),
+      getJSON('data/wishes.json').catch(() => []),
+    ]);
     const p = people.find((x) => x.id === id);
     if (!p) return;
     document.title = `Thiệp gửi ${p.name}`;
     document.getElementById('cover-title').textContent = p.cover;
     document.getElementById('greeting').textContent = p.greeting;
     document.getElementById('sign').textContent = p.sign;
+    // Lời chúc riêng trong "message"; nếu không có thì bốc ngẫu nhiên 1 câu từ data/wishes.json
+    const message = p.message?.length ? p.message : wishes.length ? [pick(wishes)] : [];
     const body = document.getElementById('message-body');
-    body.replaceChildren(...p.message.map((t) => {
+    if (message.length) body.replaceChildren(...message.map((t) => {
       const el = document.createElement('p');
       el.textContent = t;
       return el;
