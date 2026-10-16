@@ -1,11 +1,14 @@
 # Thiệp
 
-Trang web tĩnh: tấm thiệp đóng, bấm (hoặc Enter/Space) để mở. Bên trong: ảnh bên trái, lời chúc bên phải.
+Trang web tĩnh gồm 2 màn:
+- `index.html` — danh sách những người có thiệp dạng ảnh, 3 ảnh hàng trên – 4 ảnh hàng dưới (lấy từ `data/people.json`). Bấm vào một người để mở thiệp của họ.
+- `card.html?id=<id>` — tấm thiệp đóng, bấm (hoặc Enter/Space) để mở. Bên trong: ảnh bên trái, lời chúc bên phải.
 
 ## Tuỳ chỉnh
-- **Ảnh**: thay `images/photo.svg` bằng ảnh của bạn (vd. `images/photo.jpg`) rồi sửa `src` trong `index.html`.
-- **Lời chúc / tiêu đề bìa**: sửa trực tiếp trong `index.html`.
-- **Nhạc nền**: đổi `MUSIC_VIDEO_ID` trong `script.js` thành ID video YouTube (phần sau `watch?v=`). Video phải cho phép nhúng.
+- **Người nhận & lời chúc**: sửa `data/people.json`. Mỗi người gồm `id` (dùng trên URL), `name`, `photo`, `youtubeId` (nhạc nền riêng), `cover` (chữ trên bìa), `greeting`, `message` (mảng các đoạn), `sign`.
+- **Ảnh**: đặt ảnh vào `images/` (vd. `images/lan.jpg`) rồi sửa `photo` của người đó trong `data/people.json`.
+- **Nhiều ảnh**: dùng `photos` (mảng đường dẫn) thay cho `photo`. Ảnh có tên bắt đầu bằng `avatar` là ảnh chính (trên danh sách và trong thiệp); các ảnh còn lại được tải khi mở thiệp và bay ra nền xung quanh. Ảnh PNG đã tách nền trông đẹp nhất. Xem mẫu ở người đầu tiên (`images/vu-minh-anh/`).
+- **Nhạc nền**: đặt `youtubeId` của từng người là ID video YouTube (phần sau `watch?v=`). Người không có `youtubeId` sẽ dùng bài mặc định `MUSIC_VIDEO_ID` trong `card.js`. Video phải cho phép nhúng.
 - **Màu sắc**: các biến trong `:root` ở `style.css`.
 
 ## Deploy lên GitHub Pages
@@ -14,4 +17,4 @@ Trang web tĩnh: tấm thiệp đóng, bấm (hoặc Enter/Space) để mở. B�
 3. Push lên nhánh `main` (hoặc chạy tay workflow *Deploy greeting card to GitHub Pages* ở tab Actions).
 4. Trang sẽ có ở `https://<username>.github.io/<repo>/`.
 
-Xem thử local: `python3 -m http.server 8000 -d thiep` rồi mở http://localhost:8000 (nhạc YouTube không chạy khi mở file trực tiếp `file://`).
+Xem thử local: `python3 -m http.server 8000 -d thiep` rồi mở http://localhost:8000 (danh sách và nhạc YouTube không chạy khi mở file trực tiếp `file://`).

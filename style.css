@@ -63,12 +63,20 @@ body {
   padding: 5%;
 }
 
-.message {
+/* Từng chữ hiện dần sau khi bìa lật xong (~1s), mỗi chữ cách nhau 70ms; đóng thiệp thì ẩn ngay */
+.message .word {
+  display: inline-block;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity .6s ease .7s, transform .6s ease .7s;
+  transform: translateY(.4em);
+  filter: blur(3px);
 }
-.card.open .message { opacity: 1; transform: none; }
+.card.open .message .word {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition: opacity .5s ease, transform .5s ease, filter .5s ease;
+  transition-delay: calc(1s + var(--i, 0) * 70ms);
+}
 
 .message h1 {
   font-family: "Dancing Script", cursive;
@@ -87,24 +95,6 @@ body {
   font-size: max(16px, calc(var(--card-w) * .032));
   color: var(--ink);
   text-align: right;
-}
-
-/* Chú chó ló ra ở góc trên bên phải, hiện ra sau khi thiệp mở */
-.dog {
-  position: absolute;
-  top: calc(var(--card-w) * -.06);
-  right: calc(var(--card-w) * -.03);
-  width: calc(var(--card-w) * .13);
-  filter: drop-shadow(0 6px 8px var(--shadow));
-  transform-origin: bottom center;
-  transform: scale(0) rotate(-20deg);
-  opacity: 0;
-  transition: transform .6s cubic-bezier(.3, 1.6, .5, 1) 1.1s, opacity .3s ease 1.1s;
-  pointer-events: none;
-}
-.card.open .dog {
-  transform: scale(1) rotate(8deg);
-  opacity: 1;
 }
 
 /* Bìa quay quanh mép trái */
@@ -332,7 +322,7 @@ body {
   .bee, .bee .buzz, .bee-wing, .music-btn.playing { animation: none; }
   .flower, .branch, .butterfly, .butterfly .bob, .wing { animation: none; }
   .butterfly { transform: translateX(var(--rest-x, 20vw)); }
-  .card, .cover, .message, .dog { transition-duration: .01s; transition-delay: 0s; }
+  .card, .cover, .card.open .message .word { transition-duration: .01s; transition-delay: 0s; }
   .hint { animation: none; }
 }
 
@@ -343,5 +333,204 @@ body {
     --card-h: calc(var(--card-w) * 1.3);
   }
   .scene { padding: 16px 0; }
-  .dog { width: calc(var(--card-w) * .22); top: calc(var(--card-w) * -.12); right: -4px; }
+}
+
+/* ===== Nhiều đoạn lời chúc ===== */
+#message-body p + p { margin-top: .6em; }
+
+/* ===== Nút quay lại danh sách (màn thiệp) ===== */
+.back-btn {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 247, 250, .9);
+  color: var(--cover-dark);
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 6px 16px var(--shadow);
+}
+.back-btn svg { width: 20px; height: 20px; }
+.back-btn:hover { background: #fff; }
+.back-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* ===== Màn danh sách người nhận ===== */
+/* Cột lưới của body cố định theo bề ngang màn hình để danh sách không tràn trên điện thoại */
+.list-page { grid-template-columns: minmax(0, 1fr); }
+.people {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 880px);
+  padding: 48px 16px;
+}
+.people-head { text-align: center; margin-bottom: 32px; }
+.people-head .ornament { color: var(--cover); }
+.people-head h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: clamp(32px, 7vw, 48px);
+  font-weight: 600;
+  color: var(--cover-dark);
+  line-height: 1.2;
+}
+.people-head p { color: var(--muted); margin-top: 6px; }
+
+/* Lưới 8 cột, mỗi ảnh chiếm 2 cột: hàng trên 3 ảnh (lùi vào 1 cột cho cân giữa), hàng dưới 4 ảnh */
+.people-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: clamp(12px, 3vw, 24px);
+}
+.people-list li {
+  grid-column: span 2;
+  animation: rise .5s ease both;
+  animation-delay: var(--delay, 0s);
+}
+.people-list li:first-child { grid-column: 2 / span 2; }
+.people-list .people-empty { grid-column: 1 / -1; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+
+.person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 16px;
+}
+.person img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  border-radius: 14px;
+  border: 4px solid #fff;
+  background: var(--paper);
+  box-shadow: 0 8px 20px var(--shadow);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.person:hover img { transform: translateY(-4px) rotate(-1.5deg); box-shadow: 0 14px 28px var(--shadow); }
+.person:focus-visible { outline: 3px solid var(--cover-dark); outline-offset: 6px; }
+.person .name {
+  font-family: "Dancing Script", cursive;
+  font-size: clamp(18px, 3vw, 26px);
+  color: var(--cover-dark);
+}
+.people-empty { text-align: center; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .people-list li { animation: none; }
+  .person img { transition: none; }
+}
+
+/* ===== Hiệu ứng chuyển màn: danh sách → thiệp ===== */
+/* Nền của html trùng màu nền trang để lúc trình duyệt tải trang mới không bị loé trắng */
+html { background: var(--bg); }
+/* Trình duyệt hỗ trợ (Chrome/Edge/Safari mới) sẽ hoà mờ giữa 2 trang thay vì cắt cứng */
+@view-transition { navigation: auto; }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: .6s; animation-timing-function: ease; }
+
+.person { transition: transform 1.1s cubic-bezier(.45, 0, .2, 1), opacity .6s ease; }
+.leaving .people-head,
+.leaving .person:not(.picked) {
+  opacity: 0;
+  transform: scale(.9);
+  transition: transform .8s ease, opacity .7s ease;
+}
+.leaving .person { pointer-events: none; }
+/* li có animation nên tạo stacking context riêng: nâng cả li lên để ảnh bay đè lên hàng dưới */
+.people-list li:has(.picked) { position: relative; z-index: 5; }
+.person.picked {
+  transform: translate(var(--fly-x), var(--fly-y)) scale(var(--fly-scale));
+}
+.person.picked .name { opacity: 0; transition: opacity .4s ease; }
+.person.picked img { box-shadow: 0 20px 40px var(--shadow); }
+/* Màn hồng phủ dần lên ở cuối để nối với nền màn thiệp */
+.list-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  background: radial-gradient(circle at 50% 50%, #fff0f5, var(--bg) 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s ease .8s;
+}
+.list-page.leaving::after { opacity: 1; }
+
+/* ===== Ảnh kỷ niệm bay ra nền khi mở thiệp ===== */
+/* Nằm trên tấm thiệp (.scene có z-index 1) để đè lên mép thiệp, dưới các nút (z-index 10) */
+.memories {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+.memories.show { opacity: 1; }
+.memory {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  height: var(--h);
+  width: max-content; /* không bị bóp hẹp khi nằm sát mép phải màn hình */
+  max-width: 20vw;
+  transform: translate(var(--tx, -50%), var(--ty, -50%));
+}
+.memory img {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  opacity: 0;
+  filter: drop-shadow(0 10px 14px var(--shadow));
+}
+.memory img.in {
+  animation:
+    memory-in 1.1s cubic-bezier(.3, .9, .35, 1.15) var(--d, 0s) both,
+    memory-float var(--float-dur, 4s) ease-in-out calc(var(--d, 0s) + 1.1s) infinite alternate;
+}
+@keyframes memory-in {
+  from { opacity: 0; transform: translate(var(--from-x), var(--from-y)) scale(.2) rotate(0deg); }
+  40%  { opacity: 1; }
+  to   { opacity: 1; transform: rotate(var(--rot)); }
+}
+@keyframes memory-float {
+  from { opacity: 1; transform: rotate(var(--rot)); }
+  to   { opacity: 1; transform: translateY(-12px) rotate(calc(var(--rot) * -.4)); }
+}
+@media (max-width: 600px) {
+  .memory { max-width: 46vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .memory img.in { animation: none; opacity: 1; transform: rotate(var(--rot)); }
+}
+
+/* ===== Màn thiệp hiện ra: nền hoa hiện dần, bìa phóng lên từ giữa, các nút trượt vào ===== */
+.decor { animation: fade-in 1.2s ease both; }
+@keyframes fade-in { from { opacity: 0; } }
+.scene { animation: card-enter 1.2s cubic-bezier(.25, .8, .3, 1.05) .1s both; }
+@keyframes card-enter {
+  from { opacity: 0; transform: scale(.6) rotate(-3deg); }
+  50%  { opacity: 1; }
+}
+.back-btn { animation: back-enter .7s ease .9s both; }
+@keyframes back-enter { from { opacity: 0; transform: translateX(-16px); } }
+.music-btn { animation: back-enter .7s ease 1s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .decor, .scene, .back-btn, .music-btn { animation: none; }
+  .person, .list-page::after { transition: none; }
+  @view-transition { navigation: none; }
 }

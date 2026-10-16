@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tấm Thiệp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="decor" id="decor" aria-hidden="true"></div>
+  <!-- Ảnh kỷ niệm (các ảnh không phải avatar), bay ra nền khi mở thiệp -->
+  <div class="memories" id="memories" aria-hidden="true"></div>
+
+  <a class="back-btn" href="./" aria-label="Quay lại danh sách">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Danh sách</span>
+  </a>
+
+  <main class="scene">
+    <div class="card" id="card" role="button" tabindex="0" aria-expanded="false" aria-label="Mở thiệp">
+      <!-- Trang phải: nội dung chữ -->
+      <section class="page page-right">
+        <div class="message">
+          <h1 id="greeting">Gửi bạn thân mến,</h1>
+          <div id="message-body">
+            <p>
+              Cảm ơn bạn vì đã luôn ở bên, cùng chia sẻ những niềm vui và cả những ngày chông chênh.
+              Chúc bạn luôn mạnh khỏe, bình an và gặp thật nhiều may mắn trên mọi chặng đường phía trước.
+            </p>
+          </div>
+          <p class="sign" id="sign">Thương mến ♥</p>
+        </div>
+      </section>
+
+      <!-- Bìa thiệp: mặt trước là bìa, mặt sau là trang trái có ảnh -->
+      <section class="cover">
+        <div class="face front">
+          <div class="front-inner">
+            <span class="ornament">✦</span>
+            <h2 id="cover-title">Dành cho bạn</h2>
+            <span class="hint">Chạm để mở thiệp</span>
+          </div>
+        </div>
+        <div class="face back">
+          <img id="photo" src="images/photo.svg" alt="Ảnh kỷ niệm">
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Nhạc nền: phát từ YouTube, ẩn trình phát -->
+  <button class="music-btn" id="music-btn" type="button" aria-label="Bật nhạc" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></svg>
+  </button>
+  <div class="yt-holder" aria-hidden="true"><div id="yt-player"></div></div>
+
+  <script src="decor.js"></script>
+  <script src="card.js"></script>
+</body>
+</html>
