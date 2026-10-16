@@ -15,6 +15,7 @@ function personItem(p, i) {
 
   const img = document.createElement('img');
   img.src = mainPhoto(p);
+  img.onerror = () => { img.onerror = null; img.src = 'images/photo.svg'; };
   img.alt = '';
   img.loading = 'lazy';
 
@@ -27,7 +28,8 @@ function personItem(p, i) {
   return li;
 }
 
-fetch('data/people.json')
+// no-cache: luôn hỏi lại server, tránh dùng danh sách cũ trỏ tới ảnh đã bị đổi tên/xoá
+fetch('data/people.json', { cache: 'no-cache' })
   .then((res) => {
     if (!res.ok) throw new Error(res.status);
     return res.json();

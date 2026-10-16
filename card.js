@@ -10,7 +10,8 @@ async function loadPerson() {
   const id = new URLSearchParams(location.search).get('id');
   if (!id) return splitWords();
   try {
-    const res = await fetch('data/people.json');
+    // no-cache: luôn hỏi lại server, tránh dùng dữ liệu cũ trỏ tới ảnh đã bị đổi tên/xoá
+    const res = await fetch('data/people.json', { cache: 'no-cache' });
     const people = await res.json();
     const p = people.find((x) => x.id === id);
     if (!p) return;
@@ -25,7 +26,11 @@ async function loadPerson() {
       return el;
     }));
     const main = mainPhoto(p);
-    if (main) document.getElementById('photo').src = main;
+    const photo = document.getElementById('photo');
+    if (main) {
+      photo.onerror = () => { photo.onerror = null; photo.src = 'images/photo.svg'; };
+      photo.src = main;
+    }
     memories = (p.photos || []).filter((src) => src !== main);
     buildMemories(); // tải sẵn ngầm để lúc mở thiệp ảnh bay ra ngay
     if (p.youtubeId) musicId = p.youtubeId;
