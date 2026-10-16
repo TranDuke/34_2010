@@ -27,6 +27,7 @@ async function loadPerson() {
     const main = mainPhoto(p);
     if (main) document.getElementById('photo').src = main;
     memories = (p.photos || []).filter((src) => src !== main);
+    buildMemories(); // tải sẵn ngầm để lúc mở thiệp ảnh bay ra ngay
     if (p.youtubeId) musicId = p.youtubeId;
   } catch (err) {
     console.warn('Không tải được dữ liệu thiệp:', err);
@@ -77,7 +78,7 @@ card.addEventListener('keydown', (e) => {
 });
 
 // ===== Ảnh kỷ niệm bay ra nền khi mở thiệp =====
-// Ảnh chỉ được tải ở lần mở đầu tiên. Mỗi ảnh bay từ sau thiệp ra chỗ của nó rồi lơ lửng nhẹ.
+// Ảnh được tải ngầm ngay khi vào trang (ẩn đi), mở thiệp mới hiện. Mỗi ảnh bay từ sau thiệp ra chỗ của nó rồi lơ lửng nhẹ.
 // Màn rộng: xếp 2 bên trái/phải thiệp. Màn dọc (điện thoại): xếp ở dải trên/dưới thiệp.
 // Ảnh nằm đè lên mép thiệp một chút (không bắt sự kiện chuột nên vẫn bấm được thiệp).
 const memoriesEl = document.getElementById('memories');
@@ -124,22 +125,25 @@ function placeMemories() {
 }
 addEventListener('resize', placeMemories);
 
+function buildMemories() {
+  memoriesEl.replaceChildren(...memories.map((src) => {
+    const el = document.createElement('div');
+    el.className = 'memory';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.style.setProperty('--rot', `${rand(-10, 10)}deg`);
+    img.style.setProperty('--float-dur', `${rand(3, 5)}s`);
+    el.append(img);
+    return el;
+  }));
+  placeMemories();
+}
+
 function showMemories() {
   if (!memories.length) return;
-  if (!memoriesEl.childElementCount) {
-    memoriesEl.replaceChildren(...memories.map((src) => {
-      const el = document.createElement('div');
-      el.className = 'memory';
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = '';
-      img.style.setProperty('--rot', `${rand(-10, 10)}deg`);
-      img.style.setProperty('--float-dur', `${rand(3, 5)}s`);
-      el.append(img);
-      return el;
-    }));
-    placeMemories();
-  }
+  if (!memoriesEl.childElementCount) buildMemories();
+  placeMemories(); // tính lại vì lúc tải sẵn, thiệp có thể còn đang chạy animation hiện ra
   memoriesEl.classList.add('show');
   // Chạy lại animation mỗi lần mở; ảnh nào tải chậm thì bay ra ngay khi tải xong
   const start = performance.now() + MEMORY_START;
