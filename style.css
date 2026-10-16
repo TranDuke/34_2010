@@ -380,7 +380,8 @@ body {
 }
 .people-head p { color: var(--muted); margin-top: 6px; }
 
-/* Lưới 8 cột, mỗi ảnh chiếm 2 cột: hàng trên 3 ảnh (lùi vào 1 cột cho cân giữa), hàng dưới 4 ảnh */
+/* Lưới 8 cột, mỗi ảnh chiếm 2 cột (4 ảnh/hàng). Nếu số người chia 4 dư 3 (vd. 7 người)
+   thì hàng trên 3 ảnh, lùi vào 1 cột cho cân giữa; 8 người thì 4 + 4 */
 .people-list {
   list-style: none;
   padding: 0;
@@ -393,7 +394,7 @@ body {
   animation: rise .5s ease both;
   animation-delay: var(--delay, 0s);
 }
-.people-list li:first-child { grid-column: 2 / span 2; }
+.people-list li:first-child:nth-last-child(4n + 3) { grid-column: 2 / span 2; }
 .people-list .people-empty { grid-column: 1 / -1; }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
 
@@ -406,7 +407,7 @@ body {
   text-decoration: none;
   border-radius: 16px;
 }
-.person img {
+.person-photo {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
@@ -417,7 +418,7 @@ body {
   box-shadow: 0 8px 20px var(--shadow);
   transition: transform .25s ease, box-shadow .25s ease;
 }
-.person:hover img { transform: translateY(-4px) rotate(-1.5deg); box-shadow: 0 14px 28px var(--shadow); }
+.person:hover .person-photo { transform: translateY(-4px) rotate(-1.5deg); box-shadow: 0 14px 28px var(--shadow); }
 .person:focus-visible { outline: 3px solid var(--cover-dark); outline-offset: 6px; }
 .person .name {
   font-family: "Dancing Script", cursive;
@@ -426,9 +427,27 @@ body {
 }
 .people-empty { text-align: center; color: var(--muted); }
 
+/* Người bí mật (không có ảnh): ô hồng với dấu "?" */
+span.person-photo,
+.back.no-photo::after {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, var(--cover), var(--cover-dark));
+  color: #fff;
+  font-family: "Dancing Script", cursive;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+}
+span.person-photo { font-size: clamp(48px, 9vw, 88px); }
+.back.no-photo::after {
+  content: "?";
+  flex: 1;
+  border-radius: 6px;
+  font-size: calc(var(--card-h) * .4);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .people-list li { animation: none; }
-  .person img { transition: none; }
+  .person-photo { transition: none; }
 }
 
 /* ===== Hiệu ứng chuyển màn: danh sách → thiệp ===== */
@@ -453,7 +472,7 @@ html { background: var(--bg); }
   transform: translate(var(--fly-x), var(--fly-y)) scale(var(--fly-scale));
 }
 .person.picked .name { opacity: 0; transition: opacity .4s ease; }
-.person.picked img { box-shadow: 0 20px 40px var(--shadow); }
+.person.picked .person-photo { box-shadow: 0 20px 40px var(--shadow); }
 /* Màn hồng phủ dần lên ở cuối để nối với nền màn thiệp */
 .list-page::after {
   content: "";

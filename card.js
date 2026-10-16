@@ -35,6 +35,10 @@ async function loadPerson() {
     if (main) {
       photo.onerror = () => { photo.onerror = null; photo.src = 'images/photo.svg'; };
       photo.src = main;
+    } else {
+      // Không có ảnh: trang trái hiện dấu "?" bí mật
+      photo.parentElement.classList.add('no-photo');
+      photo.remove();
     }
     memories = (p.photos || []).filter((src) => src !== main);
     buildMemories(); // tải sẵn ngầm để lúc mở thiệp ảnh bay ra ngay

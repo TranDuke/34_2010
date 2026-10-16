@@ -3,7 +3,7 @@ const list = document.getElementById('people-list');
 
 // Ảnh chính: ảnh tên "avatar…" trong photos; nếu không có thì dùng photo hoặc ảnh đầu tiên
 const isAvatar = (src) => /(^|\/)avatar[^/]*$/i.test(src);
-const mainPhoto = (p) => (p.photos || []).find(isAvatar) || p.photo || (p.photos || [])[0] || 'images/photo.svg';
+const mainPhoto = (p) => (p.photos || []).find(isAvatar) || p.photo || (p.photos || [])[0];
 
 function personItem(p, i) {
   const li = document.createElement('li');
@@ -13,11 +13,20 @@ function personItem(p, i) {
   a.className = 'person';
   a.href = `card.html?id=${encodeURIComponent(p.id)}`;
 
-  const img = document.createElement('img');
-  img.src = mainPhoto(p);
-  img.onerror = () => { img.onerror = null; img.src = 'images/photo.svg'; };
-  img.alt = '';
-  img.loading = 'lazy';
+  // Người không có ảnh: hiện ô bí mật "?" thay cho ảnh
+  const src = mainPhoto(p);
+  let img;
+  if (src) {
+    img = document.createElement('img');
+    img.src = src;
+    img.onerror = () => { img.onerror = null; img.src = 'images/photo.svg'; };
+    img.alt = '';
+    img.loading = 'lazy';
+  } else {
+    img = document.createElement('span');
+    img.textContent = '?';
+  }
+  img.classList.add('person-photo');
 
   const name = document.createElement('span');
   name.className = 'name';
@@ -53,7 +62,7 @@ list.addEventListener('click', (e) => {
   if (reduceMotion.matches || document.body.classList.contains('leaving')) return;
   e.preventDefault();
 
-  const r = link.querySelector('img').getBoundingClientRect();
+  const r = link.querySelector('.person-photo').getBoundingClientRect();
   const scale = Math.min((innerHeight * 0.62) / r.height, (innerWidth * 0.8) / r.width);
   link.style.setProperty('--fly-x', `${innerWidth / 2 - (r.left + r.width / 2)}px`);
   link.style.setProperty('--fly-y', `${innerHeight / 2 - (r.top + r.height / 2)}px`);
