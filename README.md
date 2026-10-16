@@ -11,6 +11,7 @@ Trang web tĩnh gồm 2 màn:
 - **Nhiều ảnh**: dùng `photos` (mảng đường dẫn) thay cho `photo`. Ảnh có tên bắt đầu bằng `avatar` là ảnh chính (trên danh sách và trong thiệp); các ảnh còn lại được tải khi mở thiệp và bay ra nền xung quanh. Ảnh PNG đã tách nền trông đẹp nhất. Xem mẫu ở người đầu tiên (`images/vu-minh-anh/`).
 - **Nhạc nền**: đặt `youtubeId` của từng người là ID video YouTube (phần sau `watch?v=`). Người không có `youtubeId` sẽ dùng bài mặc định `MUSIC_VIDEO_ID` trong `card.js`. Video phải cho phép nhúng.
 - **Màu sắc**: các biến trong `:root` ở `style.css`.
+- **Sau khi sửa CSS/JS**: tăng số `?v=` trong `index.html` và `card.html` (vd. `?v=2` → `?v=3`) để trình duyệt của người xem tải bản mới thay vì dùng bản cũ trong cache.
 
 ## Deploy lên GitHub Pages
 1. Push repo lên GitHub.
