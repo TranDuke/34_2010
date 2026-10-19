@@ -42,13 +42,26 @@ function personItem(p, i) {
   return li;
 }
 
+// Xáo thứ tự mỗi lần vào trang (Fisher–Yates); người "secret": true giữ nguyên vị trí như trong people.json
+function shuffleKeepSecret(people) {
+  const result = [...people];
+  const slots = people.flatMap((p, i) => (p.secret ? [] : [i]));
+  const others = slots.map((i) => people[i]);
+  for (let i = others.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [others[i], others[j]] = [others[j], others[i]];
+  }
+  slots.forEach((slot, k) => { result[slot] = others[k]; });
+  return result;
+}
+
 // no-cache: luôn hỏi lại server, tránh dùng danh sách cũ trỏ tới ảnh đã bị đổi tên/xoá
 fetch('data/people.json', { cache: 'no-cache' })
   .then((res) => {
     if (!res.ok) throw new Error(res.status);
     return res.json();
   })
-  .then((people) => list.replaceChildren(...people.map(personItem)))
+  .then((people) => list.replaceChildren(...shuffleKeepSecret(people).map(personItem)))
   .catch((err) => {
     console.warn('Không tải được danh sách:', err);
     list.innerHTML = '<li class="people-empty">Không tải được danh sách thiệp. Hãy mở trang qua web server (xem README).</li>';

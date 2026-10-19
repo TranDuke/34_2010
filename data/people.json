@@ -3,6 +3,7 @@
     "id": "1",
     "name": "Vũ Minh Anh",
     "nickname": "💧",
+    "cardPhoto": "images/vu-minh-anh/card.webp",
     "photos": [
       "images/vu-minh-anh/avatar.webp",
       "images/vu-minh-anh/anh_1.webp",
@@ -19,6 +20,7 @@
     "id": "2",
     "name": "Bùi Hà My",
     "nickname": "🔥",
+    "cardPhoto": "images/bui-ha-my/card.webp",
     "photos": [
       "images/bui-ha-my/avatar.webp",
       "images/bui-ha-my/anh_1.webp",
@@ -36,6 +38,7 @@
     "id": "3",
     "name": "Trần Thị Trà My",
     "nickname": "🐻🍊",
+    "cardPhoto": "images/tran-thi-tra-my/card.webp",
     "photos": [
       "images/tran-thi-tra-my/avatar.webp",
       "images/tran-thi-tra-my/anh_1.webp",
@@ -52,6 +55,7 @@
     "id": "4",
     "name": "Đỗ Thị Hương Ly",
     "nickname": "🍸",
+    "cardPhoto": "images/do-thi-huong-ly/card.webp",
     "photos": [
       "images/do-thi-huong-ly/avatar.webp",
       "images/do-thi-huong-ly/anh_1.webp",
@@ -95,7 +99,7 @@
       "images/do-thuy-duong/anh_4.webp",
       "images/do-thuy-duong/anh_5.webp"
     ],
-    "youtubeId": "MwoNwRzx0Ak",
+    "youtubeId": "ko70cExuzZM",
     "cover": "Dành cho Thuỳ Dương",
     "greeting": "Gửi Thuỳ Dương thân mến,",
     "sign": "Thương mến ♥"
@@ -104,6 +108,7 @@
     "id": "7",
     "name": "Nguyễn Thuỳ Linh",
     "nickname": "🦄",
+    "cardPhoto": "images/nguyen-thuy-linh/card.webp",
     "photos": [
       "images/nguyen-thuy-linh/avatar.webp",
       "images/nguyen-thuy-linh/anh_1.webp",

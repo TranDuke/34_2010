@@ -31,7 +31,9 @@ async function loadPerson() {
       el.textContent = t;
       return el;
     }));
-    const main = mainPhoto(p);
+    // "cardPhoto": ảnh riêng cho mặt trong thiệp; nếu không có thì dùng ảnh chính
+    const avatar = mainPhoto(p);
+    const main = p.cardPhoto || avatar;
     const photo = document.getElementById('photo');
     if (main) {
       photo.onerror = () => { photo.onerror = null; photo.src = 'images/photo.svg'; };
@@ -41,7 +43,7 @@ async function loadPerson() {
       photo.parentElement.classList.add('no-photo');
       photo.remove();
     }
-    memories = (p.photos || []).filter((src) => src !== main);
+    memories = (p.photos || []).filter((src) => src !== main && src !== avatar);
     buildMemories(); // tải sẵn ngầm để lúc mở thiệp ảnh bay ra ngay
     if (p.youtubeId) musicId = p.youtubeId;
     if (p.musicStart) musicStart = p.musicStart;
