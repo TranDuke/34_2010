@@ -33,7 +33,7 @@ function personItem(p, i) {
 
   const name = document.createElement('span');
   name.className = 'name';
-  name.textContent = p.name;
+  name.textContent = p.nickname || p.name; // biệt danh (nếu có) thay cho tên
 
   a.append(img, name);
   li.append(a);

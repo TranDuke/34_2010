@@ -44,6 +44,10 @@ async function loadPerson() {
     buildMemories(); // tải sẵn ngầm để lúc mở thiệp ảnh bay ra ngay
     if (p.youtubeId) musicId = p.youtubeId;
     if (p.musicStart) musicStart = p.musicStart;
+    // Bài người xem đã tự đổi cho thiệp này lần trước (nếu có) được ưu tiên
+    musicKey = `music:${id}`;
+    const saved = loadSavedSong();
+    if (saved) [musicId, musicStart] = [saved.id, saved.start];
   } catch (err) {
     console.warn('Không tải được dữ liệu thiệp:', err);
   }
@@ -194,6 +198,23 @@ let playerReady = false;
 let wantPlay = false;
 let loadedId = null; // bài đang nạp trong trình phát (khác musicId khi vừa đổi bài lúc player chưa sẵn sàng)
 
+// Bài người xem tự đổi được lưu trong localStorage của trình duyệt đó, riêng cho từng thiệp (?id=)
+let musicKey = null;
+
+function loadSavedSong() {
+  try {
+    const song = JSON.parse(localStorage.getItem(musicKey));
+    return song && /^[\w-]{11}$/.test(song.id) ? { id: song.id, start: Number(song.start) || 0 } : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveSong(song) {
+  if (!musicKey) return;
+  try { localStorage.setItem(musicKey, JSON.stringify(song)); } catch { /* trình duyệt chặn lưu: bỏ qua */ }
+}
+
 // Chỉ nạp YouTube sau khi đã biết bài của người nhận thiệp
 function loadYouTube() {
   const ytScript = document.createElement('script');
@@ -259,7 +280,8 @@ musicBtn.addEventListener('click', () => {
 
 // ===== Đổi bài bằng link YouTube (ô hiện khi rê chuột vào nút nhạc) =====
 // Nhận link watch?v=, youtu.be/, shorts/, embed/, music.youtube.com hoặc chỉ ID 11 ký tự;
-// "t=" / "start=" trong link (vd. 90, 1m30s) thành giây bắt đầu. Chỉ đổi cho lần xem này, không lưu lại.
+// "t=" / "start=" trong link (vd. 90, 1m30s) thành giây bắt đầu. Bài mới được nhớ cho thiệp này
+// trên trình duyệt của người xem, lần sau mở lại sẽ phát bài đó.
 const musicForm = document.getElementById('music-form');
 const musicUrl = document.getElementById('music-url');
 const musicMsg = document.getElementById('music-msg');
@@ -297,6 +319,7 @@ musicForm.addEventListener('submit', (e) => {
   }
   musicId = song.id;
   musicStart = song.start;
+  saveSong(song);
   wantPlay = true;
   if (playerReady) playMusic();
   musicMsg.textContent = 'Đang phát bài mới ♪';

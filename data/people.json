@@ -2,6 +2,7 @@
   {
     "id": "1",
     "name": "Vũ Minh Anh",
+    "nickname": "💧",
     "photos": [
       "images/vu-minh-anh/avatar.webp",
       "images/vu-minh-anh/anh_1.webp",
@@ -17,6 +18,7 @@
   {
     "id": "2",
     "name": "Bùi Hà My",
+    "nickname": "🔥",
     "photos": [
       "images/bui-ha-my/avatar.webp",
       "images/bui-ha-my/anh_1.webp",
@@ -33,6 +35,7 @@
   {
     "id": "3",
     "name": "Trần Thị Trà My",
+    "nickname": "Meme",
     "photos": [
       "images/tran-thi-tra-my/avatar.webp",
       "images/tran-thi-tra-my/anh_1.webp",
@@ -48,6 +51,7 @@
   {
     "id": "4",
     "name": "Đỗ Thị Hương Ly",
+    "nickname": "🍸",
     "photos": [
       "images/do-thi-huong-ly/avatar.webp",
       "images/do-thi-huong-ly/anh_1.webp",
@@ -63,6 +67,7 @@
   {
     "id": "5",
     "name": "Nguyễn Thị Nguyệt",
+    "nickname": "🌙",
     "photos": [
       "images/nguyen-thi-nguyet/avatar.webp",
       "images/nguyen-thi-nguyet/anh_1.webp",
@@ -87,6 +92,7 @@
   {
     "id": "7",
     "name": "Nguyễn Thuỳ Linh",
+    "nickname": "Linh Buri",
     "photos": [
       "images/nguyen-thuy-linh/avatar.webp",
       "images/nguyen-thuy-linh/anh_1.webp",
@@ -96,7 +102,8 @@
       "images/nguyen-thuy-linh/anh_5.webp",
       "images/nguyen-thuy-linh/anh_6.webp"
     ],
-    "youtubeId": "MwoNwRzx0Ak",
+    "youtubeId": "2Vv-BfVoq4g",
+    "musicStart": 20,
     "cover": "Dành cho Thuỳ Linh",
     "greeting": "Gửi Thuỳ Linh thân mến,",
     "sign": "Thương mến ♥"
