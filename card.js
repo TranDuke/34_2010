@@ -158,6 +158,13 @@ function buildMemories() {
 function showMemories() {
   if (!memories.length) return;
   if (!memoriesEl.childElementCount) buildMemories();
+  // Xáo thứ tự ảnh mỗi lần mở (Fisher–Yates) để mỗi ảnh rơi vào chỗ khác nhau
+  const items = [...memoriesEl.children];
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  memoriesEl.append(...items);
   placeMemories(); // tính lại vì lúc tải sẵn, thiệp có thể còn đang chạy animation hiện ra
   memoriesEl.classList.add('show');
   // Chạy lại animation mỗi lần mở; ảnh nào tải chậm thì bay ra ngay khi tải xong
