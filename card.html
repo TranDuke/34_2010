@@ -4,10 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tấm Thiệp</title>
+  <!-- Chọn ngẫu nhiên màu cho thiệp trước khi vẽ trang (màu định nghĩa ở [data-theme] trong style.css, hoa lá trong decor.js) -->
+  <script>
+    document.documentElement.dataset.theme =
+      ['pink', 'red', 'blue', 'yellow', 'orange', 'purple'][Math.floor(Math.random() * 6)];
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
   <div class="decor" id="decor" aria-hidden="true"></div>
@@ -51,13 +56,25 @@
     </div>
   </main>
 
-  <!-- Nhạc nền: phát từ YouTube, ẩn trình phát -->
-  <button class="music-btn" id="music-btn" type="button" aria-label="Bật nhạc" aria-pressed="false">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></svg>
-  </button>
+  <!-- Nhạc nền: phát từ YouTube, ẩn trình phát. Rê chuột vào nút nhạc để dán link bài khác -->
+  <div class="music">
+    <form class="music-form" id="music-form" autocomplete="off">
+      <div class="music-form-box">
+        <label class="music-label" for="music-url">Đổi bài hát</label>
+        <div class="music-row">
+          <input id="music-url" type="text" inputmode="url" placeholder="Dán link YouTube…" aria-describedby="music-msg">
+          <button type="submit">Phát</button>
+        </div>
+        <p class="music-msg" id="music-msg" role="status"></p>
+      </div>
+    </form>
+    <button class="music-btn" id="music-btn" type="button" aria-label="Bật nhạc" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></svg>
+    </button>
+  </div>
   <div class="yt-holder" aria-hidden="true"><div id="yt-player"></div></div>
 
-  <script src="decor.js?v=2"></script>
-  <script src="card.js?v=2"></script>
+  <script src="decor.js?v=10"></script>
+  <script src="card.js?v=10"></script>
 </body>
 </html>

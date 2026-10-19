@@ -3,9 +3,22 @@ const decor = document.getElementById('decor');
 const rand = (min, max) => min + Math.random() * (max - min);
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-const PINKS = ['#f8bbd0', '#f48fb1', '#f06292', '#ec407a', '#fce4ec'];
+// Màu hoa & bướm theo theme của trang (data-theme trên <html>); trang danh sách không có theme nên dùng hồng.
+// tint: 8 sắc từ nhạt → đậm; accent: cặp màu cánh bướm điểm xuyết; body: thân bướm
+const PALETTES = {
+  pink:   { tint: ['#fce4ec', '#f8bbd0', '#f48fb1', '#f06292', '#ec407a', '#e91e63', '#c2185b', '#ad1457'], accent: ['#ce93d8', '#8e24aa'], body: '#6a1b3d' },
+  red:    { tint: ['#ffebee', '#ffcdd2', '#ef9a9a', '#e57373', '#ef5350', '#f44336', '#d32f2f', '#c62828'], accent: ['#ffd54f', '#f9a825'], body: '#5f1414' },
+  blue:   { tint: ['#e3f2fd', '#bbdefb', '#90caf9', '#64b5f6', '#42a5f5', '#2196f3', '#1976d2', '#1565c0'], accent: ['#ce93d8', '#8e24aa'], body: '#0d3c6e' },
+  yellow: { tint: ['#fffde7', '#fff9c4', '#fff59d', '#fff176', '#ffee58', '#fdd835', '#f9a825', '#f57f17'], accent: ['#ffb74d', '#ef6c00'], body: '#5c4300' },
+  orange: { tint: ['#fff3e0', '#ffe0b2', '#ffcc80', '#ffb74d', '#ffa726', '#ff9800', '#f57c00', '#e65100'], accent: ['#fff176', '#f9a825'], body: '#6b2a0c' },
+  purple: { tint: ['#f3e5f5', '#e1bee7', '#ce93d8', '#ba68c8', '#ab47bc', '#9c27b0', '#7b1fa2', '#6a1b9a'], accent: ['#f48fb1', '#c2185b'], body: '#3f1660' },
+};
+const THEME = PALETTES[document.documentElement.dataset.theme] || PALETTES.pink;
+const [T50, T100, T200, T300, T400, T500, T700, T800] = THEME.tint;
+
+const PINKS = [T100, T200, T300, T400, T50];
 const LEAF = ['#66bb6a', '#43a047', '#81c784', '#2e7d32'];
-const WINGS = [['#f06292', '#ad1457'], ['#f8bbd0', '#ec407a'], ['#ce93d8', '#8e24aa'], ['#ffffff', '#f48fb1']];
+const WINGS = [[T300, T800], [T100, T400], THEME.accent, ['#ffffff', T200]];
 
 // Một chiếc lá nằm ngang, gốc ở (0,0)
 const leaf = (x, y, angle, len, color) => `
@@ -27,43 +40,43 @@ const FLOWERS = {
     const c = pick(PINKS.concat('#ffffff'));
     let p = '';
     for (let i = 0; i < 5; i++) p += `<ellipse cx="0" cy="-22" rx="14" ry="22" fill="${c}" transform="rotate(${i * 72})"/>`;
-    return backLeaves() + p + `<circle r="11" fill="${pick(['#ffd54f', '#c2185b'])}"/><circle r="5" fill="#fff8e1" opacity=".7"/>`;
+    return backLeaves() + p + `<circle r="11" fill="${pick(['#ffd54f', T700])}"/><circle r="5" fill="#fff8e1" opacity=".7"/>`;
   },
   // Hoa cúc: nhiều cánh mảnh
   daisy() {
-    const c = pick(['#ffffff', '#fce4ec', '#f8bbd0']);
+    const c = pick(['#ffffff', T50, T100]);
     let p = '';
-    for (let i = 0; i < 16; i++) p += `<ellipse cx="0" cy="-25" rx="5" ry="18" fill="${c}" stroke="#f8bbd0" stroke-width=".8" transform="rotate(${i * 22.5})"/>`;
+    for (let i = 0; i < 16; i++) p += `<ellipse cx="0" cy="-25" rx="5" ry="18" fill="${c}" stroke="${T100}" stroke-width=".8" transform="rotate(${i * 22.5})"/>`;
     return backLeaves() + p + `<circle r="12" fill="#ffca28"/><circle r="12" fill="none" stroke="#f9a825" stroke-width="2" stroke-dasharray="2 3"/>`;
   },
   // Hoa anh đào: cánh có khía
   sakura() {
-    const c = pick(['#fce4ec', '#f8bbd0', '#f48fb1']);
+    const c = pick([T50, T100, T200]);
     let p = '';
     for (let i = 0; i < 5; i++) {
-      p += `<path d="M0 0 C-16 -10 -20 -32 -8 -44 L0 -37 L8 -44 C20 -32 16 -10 0 0 Z" fill="${c}" stroke="#f06292" stroke-width=".8" transform="rotate(${i * 72})"/>`;
+      p += `<path d="M0 0 C-16 -10 -20 -32 -8 -44 L0 -37 L8 -44 C20 -32 16 -10 0 0 Z" fill="${c}" stroke="${T300}" stroke-width=".8" transform="rotate(${i * 72})"/>`;
     }
     let st = '';
-    for (let i = 0; i < 8; i++) st += `<line x1="0" y1="0" x2="0" y2="-14" stroke="#c2185b" stroke-width="1.2" transform="rotate(${i * 45})"/><circle cx="0" cy="-15" r="1.8" fill="#ad1457" transform="rotate(${i * 45})"/>`;
-    return backLeaves() + p + st + `<circle r="4" fill="#ec407a"/>`;
+    for (let i = 0; i < 8; i++) st += `<line x1="0" y1="0" x2="0" y2="-14" stroke="${T700}" stroke-width="1.2" transform="rotate(${i * 45})"/><circle cx="0" cy="-15" r="1.8" fill="${T800}" transform="rotate(${i * 45})"/>`;
+    return backLeaves() + p + st + `<circle r="4" fill="${T400}"/>`;
   },
   // Hoa hồng nhìn từ trên xuống
   rose() {
-    const c = pick(['#f06292', '#ec407a', '#f48fb1', '#e91e63']);
+    const c = pick([T300, T400, T200, T500]);
     let p = '';
     for (let i = 0; i < 6; i++) p += `<ellipse cx="0" cy="-22" rx="17" ry="20" fill="${c}" transform="rotate(${i * 60 + 30})"/>`;
     return backLeaves() + p +
       `<circle r="26" fill="${c}"/>
        <path d="M2 0 a3 3 0 1 1 -6 0 a7 7 0 1 1 13 0 a11 11 0 1 1 -21 0 a15 15 0 1 1 29 0 a19 19 0 1 1 -37 0"
-             fill="none" stroke="#ad1457" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>`;
+             fill="none" stroke="${T800}" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>`;
   },
   // Hoa tulip nhìn ngang, có thân và lá
   tulip() {
-    const c = pick(['#f06292', '#ec407a', '#f48fb1', '#ffffff']);
+    const c = pick([T300, T400, T200, '#ffffff']);
     return `<path d="M0 -6 Q-2 22 0 50" stroke="#388e3c" stroke-width="4" fill="none"/>
       <path d="M0 46 C-22 30 -26 10 -20 0 C-12 14 -6 28 0 46 Z" fill="${pick(LEAF)}"/>
       <path d="M0 40 C18 26 22 8 18 -2 C10 12 4 24 0 40 Z" fill="${pick(LEAF)}"/>
-      <path d="M-20 -36 L-20 -12 C-20 4 20 4 20 -12 L20 -36 L10 -24 L0 -40 L-10 -24 Z" fill="${c}" stroke="#ad1457" stroke-width="1"/>
+      <path d="M-20 -36 L-20 -12 C-20 4 20 4 20 -12 L20 -36 L10 -24 L0 -40 L-10 -24 Z" fill="${c}" stroke="${T800}" stroke-width="1"/>
       <path d="M0 -40 C-8 -26 -8 -6 0 -2 C8 -6 8 -26 0 -40 Z" fill="#000" opacity=".08"/>`;
   },
 };
@@ -112,10 +125,10 @@ function butterflySVG([wing, edge]) {
     <circle cx="17" cy="23" r="2" fill="${edge}" opacity=".45"/>`;
   return `<svg viewBox="0 0 70 56">
     <g class="wing far" opacity=".5"><g transform="rotate(-12 35 41)">${wings(edge)}</g></g>
-    <path d="M31 44.5 l-2 3.5 M36 44.5 l-.5 4 M41 44.5 l1.5 3.5" stroke="#6a1b3d" stroke-width=".45" fill="none" stroke-linecap="round"/>
-    <ellipse cx="34" cy="42" rx="13" ry="3.4" fill="#6a1b3d"/>
-    <circle cx="49" cy="41" r="3.6" fill="#6a1b3d"/>
-    <path d="M51 38 Q55 28 61 27 M50 38 Q52 27 57 24" stroke="#6a1b3d" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M31 44.5 l-2 3.5 M36 44.5 l-.5 4 M41 44.5 l1.5 3.5" stroke="${THEME.body}" stroke-width=".45" fill="none" stroke-linecap="round"/>
+    <ellipse cx="34" cy="42" rx="13" ry="3.4" fill="${THEME.body}"/>
+    <circle cx="49" cy="41" r="3.6" fill="${THEME.body}"/>
+    <path d="M51 38 Q55 28 61 27 M50 38 Q52 27 57 24" stroke="${THEME.body}" stroke-width="1" fill="none" stroke-linecap="round"/>
     <g class="wing near">${wings(wing, spots)}</g>
   </svg>`;
 }

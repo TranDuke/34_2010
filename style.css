@@ -7,9 +7,32 @@
   --ink: #6a1b3d;
   --muted: #8d5a6e;
   --shadow: rgba(194, 24, 91, .22);
+  --glow: #fff0f5;
   /* To hơn 50% so với bản cũ (760px → 1140px), nhưng không vượt khung màn hình */
   --card-w: min(94vw, 1140px, calc((100vh - 48px) / 0.62));
   --card-h: calc(var(--card-w) * 0.62);
+}
+
+/* Màn thiệp: chọn ngẫu nhiên 1 theme (đặt data-theme trên <html> ở card.html); theme "pink" và trang danh sách dùng màu hồng ở trên */
+[data-theme="red"] {
+  --bg: #ffe5e3; --paper: #fff8f7; --cover: #e53935; --cover-dark: #b71c1c; --gold: #fff3f2;
+  --ink: #5f1414; --muted: #8f5a56; --shadow: rgba(183, 28, 28, .22); --glow: #fff3f2;
+}
+[data-theme="blue"] {
+  --bg: #e3f0fd; --paper: #f7fbff; --cover: #42a5f5; --cover-dark: #1565c0; --gold: #f0f7ff;
+  --ink: #0d3c6e; --muted: #4f6f8f; --shadow: rgba(21, 101, 192, .22); --glow: #f0f7ff;
+}
+[data-theme="yellow"] {
+  --bg: #fff4cc; --paper: #fffdf4; --cover: #f2b705; --cover-dark: #b07800; --gold: #fffbea;
+  --ink: #5c4300; --muted: #8a7230; --shadow: rgba(176, 120, 0, .24); --glow: #fffbea;
+}
+[data-theme="orange"] {
+  --bg: #ffe8d6; --paper: #fff9f4; --cover: #ff8a3d; --cover-dark: #d84315; --gold: #fff4ec;
+  --ink: #6b2a0c; --muted: #93624a; --shadow: rgba(216, 67, 21, .22); --glow: #fff4ec;
+}
+[data-theme="purple"] {
+  --bg: #efe4fb; --paper: #fbf7ff; --cover: #ab6fe0; --cover-dark: #6a1b9a; --gold: #f8f1ff;
+  --ink: #3f1660; --muted: #78608f; --shadow: rgba(106, 27, 154, .22); --glow: #f8f1ff;
 }
 
 * { box-sizing: border-box; margin: 0; }
@@ -18,7 +41,7 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at 50% 40%, #fff0f5, var(--bg) 70%) fixed;
+  background: radial-gradient(circle at 50% 40%, var(--glow), var(--bg) 70%) fixed;
   font-family: "Be Vietnam Pro", system-ui, sans-serif;
   color: var(--ink);
   overflow-x: hidden;
@@ -135,11 +158,14 @@ body {
   gap: .6em;
   color: var(--gold);
   text-align: center;
+  container-type: inline-size;
 }
+/* Giữ chữ bìa trên 1 hàng: tên dài thì chữ nhỏ lại cho vừa khung (cqi = % bề rộng khung viền) */
 .front h2 {
   font-family: "Dancing Script", cursive;
-  font-size: max(24px, calc(var(--card-w) * .058));
+  font-size: min(max(24px, calc(var(--card-w) * .058)), 10cqi);
   font-weight: 600;
+  white-space: nowrap;
 }
 .ornament { font-size: max(16px, calc(var(--card-w) * .034)); }
 .hint {
@@ -169,11 +195,14 @@ body {
 }
 
 /* ===== Nút nhạc ===== */
-.music-btn {
+.music {
   position: fixed;
   right: 16px;
   bottom: 16px;
   z-index: 10;
+}
+.music-btn {
+  position: relative;
   width: 52px;
   height: 52px;
   border: 0;
@@ -200,6 +229,57 @@ body {
 .music-btn.playing::after { display: none; }
 .music-btn.playing { animation: spin 4s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Ô dán link nhạc: hiện phía trên nút nhạc khi rê chuột hoặc đang gõ trong ô.
+   padding-bottom là "cầu nối" để chuột đi từ nút lên ô mà không bị ẩn mất */
+.music-form {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  padding-bottom: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+}
+.music:hover .music-form,
+.music:focus-within .music-form { opacity: 1; visibility: visible; transform: none; }
+.music-form-box {
+  width: min(320px, calc(100vw - 32px));
+  padding: 10px 12px 12px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 10px 24px var(--shadow);
+}
+.music-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500; color: var(--cover-dark); }
+.music-row { display: flex; gap: 6px; }
+.music-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1.5px solid color-mix(in srgb, var(--cover) 45%, transparent);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+.music-row input:focus { outline: none; border-color: var(--cover-dark); }
+.music-row button {
+  padding: 0 14px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--cover), var(--cover-dark));
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.music-row button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.music-msg { margin-top: 6px; font-size: 12px; color: var(--muted); }
+.music-msg:empty { display: none; }
+.music-msg.error { color: var(--cover-dark); }
 
 /* Trình phát YouTube ẩn: YouTube cần tối thiểu 200x200 mới chịu phát,
    nên giữ đúng kích thước đó nhưng trong suốt và nằm dưới mọi thứ */
@@ -349,7 +429,7 @@ body {
   gap: 6px;
   padding: 8px 16px 8px 10px;
   border-radius: 999px;
-  background: rgba(255, 247, 250, .9);
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
   color: var(--cover-dark);
   font-weight: 500;
   font-size: 14px;
@@ -479,7 +559,7 @@ html { background: var(--bg); }
   position: fixed;
   inset: 0;
   z-index: 6;
-  background: radial-gradient(circle at 50% 50%, #fff0f5, var(--bg) 70%);
+  background: radial-gradient(circle at 50% 50%, var(--glow), var(--bg) 70%);
   opacity: 0;
   pointer-events: none;
   transition: opacity .6s ease .8s;
@@ -546,10 +626,11 @@ html { background: var(--bg); }
 }
 .back-btn { animation: back-enter .7s ease .9s both; }
 @keyframes back-enter { from { opacity: 0; transform: translateX(-16px); } }
-.music-btn { animation: back-enter .7s ease 1s both; }
+.music { animation: back-enter .7s ease 1s both; }
 
 @media (prefers-reduced-motion: reduce) {
-  .decor, .scene, .back-btn, .music-btn { animation: none; }
+  .decor, .scene, .back-btn, .music { animation: none; }
+  .music-form { transition: none; }
   .person, .list-page::after { transition: none; }
   @view-transition { navigation: none; }
 }

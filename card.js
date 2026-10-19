@@ -43,6 +43,7 @@ async function loadPerson() {
     memories = (p.photos || []).filter((src) => src !== main);
     buildMemories(); // tải sẵn ngầm để lúc mở thiệp ảnh bay ra ngay
     if (p.youtubeId) musicId = p.youtubeId;
+    if (p.musicStart) musicStart = p.musicStart;
   } catch (err) {
     console.warn('Không tải được dữ liệu thiệp:', err);
   }
@@ -177,11 +178,14 @@ function showMemories() {
 // (ID video là phần sau "watch?v=" trong link YouTube)
 const MUSIC_VIDEO_ID = 'MwoNwRzx0Ak';
 let musicId = MUSIC_VIDEO_ID;
+// Giây bắt đầu phát, đặt qua "musicStart" trong data/people.json (mặc định phát từ đầu)
+let musicStart = 0;
 
 const musicBtn = document.getElementById('music-btn');
 let player = null;
 let playerReady = false;
 let wantPlay = false;
+let loadedId = null; // bài đang nạp trong trình phát (khác musicId khi vừa đổi bài lúc player chưa sẵn sàng)
 
 // Chỉ nạp YouTube sau khi đã biết bài của người nhận thiệp
 function loadYouTube() {
@@ -195,14 +199,23 @@ window.onYouTubeIframeAPIReady = () => {
     width: 200,
     height: 200,
     videoId: musicId,
-    playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: musicId, playsinline: 1, origin: location.origin },
+    playerVars: { autoplay: 0, controls: 0, start: musicStart, playsinline: 1, origin: location.origin },
     events: {
       onReady: () => {
         playerReady = true;
+        loadedId = musicId;
         player.setVolume(70);
-        if (wantPlay) player.playVideo();
+        if (wantPlay) playMusic();
       },
-      onStateChange: (e) => setMusicUI(e.data === YT.PlayerState.PLAYING),
+      onStateChange: (e) => {
+        // Tự lặp lại bài, quay về đúng giây bắt đầu (musicStart) thay vì 0:00
+        if (e.data === YT.PlayerState.ENDED) {
+          player.seekTo(musicStart, true);
+          player.playVideo();
+          return;
+        }
+        setMusicUI(e.data === YT.PlayerState.PLAYING);
+      },
       onError: (e) => console.warn('Không phát được nhạc YouTube, mã lỗi:', e.data),
     },
   });
@@ -214,10 +227,19 @@ function setMusicUI(playing) {
   musicBtn.setAttribute('aria-label', playing ? 'Tắt nhạc' : 'Bật nhạc');
 }
 
+function playMusic() {
+  if (loadedId === musicId) {
+    player.playVideo();
+  } else {
+    loadedId = musicId;
+    player.loadVideoById({ videoId: musicId, startSeconds: musicStart });
+  }
+}
+
 // Trình duyệt chỉ cho phát nhạc sau khi người xem tương tác, nên nhạc bắt đầu lúc mở thiệp
 function startMusic() {
   wantPlay = true;
-  if (playerReady) player.playVideo();
+  if (playerReady) playMusic();
 }
 
 musicBtn.addEventListener('click', () => {
@@ -225,5 +247,56 @@ musicBtn.addEventListener('click', () => {
   wantPlay = !playing;
   if (!playerReady) return;
   if (playing) player.pauseVideo();
-  else player.playVideo();
+  else playMusic();
+});
+
+// ===== Đổi bài bằng link YouTube (ô hiện khi rê chuột vào nút nhạc) =====
+// Nhận link watch?v=, youtu.be/, shorts/, embed/, music.youtube.com hoặc chỉ ID 11 ký tự;
+// "t=" / "start=" trong link (vd. 90, 1m30s) thành giây bắt đầu. Chỉ đổi cho lần xem này, không lưu lại.
+const musicForm = document.getElementById('music-form');
+const musicUrl = document.getElementById('music-url');
+const musicMsg = document.getElementById('music-msg');
+const YT_ID = /^[\w-]{11}$/;
+
+function parseSeconds(t) {
+  if (!t) return 0;
+  if (/^\d+$/.test(t)) return Number(t);
+  const m = t.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/);
+  return m ? (Number(m[1] || 0) * 3600) + (Number(m[2] || 0) * 60) + Number(m[3] || 0) : 0;
+}
+
+function parseYouTube(text) {
+  text = text.trim();
+  if (YT_ID.test(text)) return { id: text, start: 0 };
+  let url;
+  try { url = new URL(/^https?:\/\//i.test(text) ? text : `https://${text}`); } catch { return null; }
+  const host = url.hostname.replace(/^(www|m|music)\./, '');
+  let id = null;
+  if (host === 'youtu.be') id = url.pathname.slice(1).split('/')[0];
+  else if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
+    id = url.searchParams.get('v') || (url.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]{11})/) || [])[1];
+  }
+  if (!id || !YT_ID.test(id)) return null;
+  return { id, start: parseSeconds(url.searchParams.get('t') || url.searchParams.get('start')) };
+}
+
+musicForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const song = parseYouTube(musicUrl.value);
+  musicMsg.classList.toggle('error', !song);
+  if (!song) {
+    musicMsg.textContent = 'Link chưa đúng, hãy dán link video YouTube.';
+    return;
+  }
+  musicId = song.id;
+  musicStart = song.start;
+  wantPlay = true;
+  if (playerReady) playMusic();
+  musicMsg.textContent = 'Đang phát bài mới ♪';
+  musicUrl.value = '';
+});
+
+// Esc: đóng ô nhập (bỏ focus để ô ẩn đi)
+musicForm.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') document.activeElement.blur();
 });

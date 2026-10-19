@@ -16,38 +16,63 @@
   },
   {
     "id": "2",
-    "name": "Minh",
-    "photo": "images/photo.svg",
-    "youtubeId": "MwoNwRzx0Ak",
-    "cover": "Dành cho Minh",
-    "greeting": "Gửi Minh thân mến,",
+    "name": "Bùi Hà My",
+    "photos": [
+      "images/bui-ha-my/avatar.webp",
+      "images/bui-ha-my/anh_1.webp",
+      "images/bui-ha-my/anh_2.webp",
+      "images/bui-ha-my/anh_3.webp",
+      "images/bui-ha-my/anh_4.webp"
+    ],
+    "youtubeId": "kx4G7QBu1y8",
+    "musicStart": 10,
+    "cover": "Dành cho Hà My",
+    "greeting": "Gửi Hà My thân mến,",
     "sign": "Thương mến ♥"
   },
   {
     "id": "3",
-    "name": "Hoa",
-    "photo": "images/photo.svg",
-    "youtubeId": "MwoNwRzx0Ak",
-    "cover": "Dành cho Hoa",
-    "greeting": "Gửi Hoa thân mến,",
+    "name": "Trần Thị Trà My",
+    "photos": [
+      "images/tran-thi-tra-my/avatar.webp",
+      "images/tran-thi-tra-my/anh_1.webp",
+      "images/tran-thi-tra-my/anh_2.webp",
+      "images/tran-thi-tra-my/anh_3.webp",
+      "images/tran-thi-tra-my/anh_4.webp"
+    ],
+    "youtubeId": "CtRsuSt9sys",
+    "cover": "Dành cho Trà My",
+    "greeting": "Gửi Trà My thân mến,",
     "sign": "Thương mến ♥"
   },
   {
     "id": "4",
-    "name": "Tuấn",
-    "photo": "images/photo.svg",
-    "youtubeId": "MwoNwRzx0Ak",
-    "cover": "Dành cho Tuấn",
-    "greeting": "Gửi Tuấn thân mến,",
+    "name": "Đỗ Thị Hương Ly",
+    "photos": [
+      "images/do-thi-huong-ly/avatar.webp",
+      "images/do-thi-huong-ly/anh_1.webp",
+      "images/do-thi-huong-ly/anh_2.webp",
+      "images/do-thi-huong-ly/anh_3.webp",
+      "images/do-thi-huong-ly/anh_4.webp"
+    ],
+    "youtubeId": "83C3TZ4Zm_o",
+    "cover": "Dành cho Hương Ly",
+    "greeting": "Gửi Hương Ly thân mến,",
     "sign": "Thương mến ♥"
   },
   {
     "id": "5",
-    "name": "Mai",
-    "photo": "images/photo.svg",
+    "name": "Nguyễn Thị Nguyệt",
+    "photos": [
+      "images/nguyen-thi-nguyet/avatar.webp",
+      "images/nguyen-thi-nguyet/anh_1.webp",
+      "images/nguyen-thi-nguyet/anh_2.webp",
+      "images/nguyen-thi-nguyet/anh_3.webp",
+      "images/nguyen-thi-nguyet/anh_4.webp"
+    ],
     "youtubeId": "MwoNwRzx0Ak",
-    "cover": "Dành cho Mai",
-    "greeting": "Gửi Mai thân mến,",
+    "cover": "Dành cho Nguyệt",
+    "greeting": "Gửi Nguyệt thân mến,",
     "sign": "Thương mến ♥"
   },
   {
@@ -61,11 +86,19 @@
   },
   {
     "id": "7",
-    "name": "Linh",
-    "photo": "images/photo.svg",
+    "name": "Nguyễn Thuỳ Linh",
+    "photos": [
+      "images/nguyen-thuy-linh/avatar.webp",
+      "images/nguyen-thuy-linh/anh_1.webp",
+      "images/nguyen-thuy-linh/anh_2.webp",
+      "images/nguyen-thuy-linh/anh_3.webp",
+      "images/nguyen-thuy-linh/anh_4.webp",
+      "images/nguyen-thuy-linh/anh_5.webp",
+      "images/nguyen-thuy-linh/anh_6.webp"
+    ],
     "youtubeId": "MwoNwRzx0Ak",
-    "cover": "Dành cho Linh",
-    "greeting": "Gửi Linh thân mến,",
+    "cover": "Dành cho Thuỳ Linh",
+    "greeting": "Gửi Thuỳ Linh thân mến,",
     "sign": "Thương mến ♥"
   },
   {

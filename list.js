@@ -1,5 +1,8 @@
 // ===== Danh sách người nhận thiệp, lấy từ data/people.json =====
 const list = document.getElementById('people-list');
+// Số ?v= của chính list.js (đặt trong index.html); gắn vào link thiệp để khi tăng số này,
+// trình duyệt tải card.html mới thay vì dùng bản cũ đã lưu cho từng ?id=
+const VERSION = new URL(document.currentScript.src).searchParams.get('v');
 
 // Ảnh chính: ảnh tên "avatar…" trong photos; nếu không có thì dùng photo hoặc ảnh đầu tiên
 const isAvatar = (src) => /(^|\/)avatar[^/]*$/i.test(src);
@@ -11,7 +14,7 @@ function personItem(p, i) {
 
   const a = document.createElement('a');
   a.className = 'person';
-  a.href = `card.html?id=${encodeURIComponent(p.id)}`;
+  a.href = `card.html?id=${encodeURIComponent(p.id)}${VERSION ? `&v=${VERSION}` : ''}`;
 
   // Người không có ảnh: hiện ô bí mật "?" thay cho ảnh
   const src = mainPhoto(p);
