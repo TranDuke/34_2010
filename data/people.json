@@ -35,7 +35,7 @@
   {
     "id": "3",
     "name": "Trần Thị Trà My",
-    "nickname": "Meme",
+    "nickname": "🐻🍊",
     "photos": [
       "images/tran-thi-tra-my/avatar.webp",
       "images/tran-thi-tra-my/anh_1.webp",
@@ -82,17 +82,24 @@
   },
   {
     "id": "6",
-    "name": "Nam",
-    "photo": "images/photo.svg",
+    "name": "Đỗ Thuỳ Dương",
+    "photos": [
+      "images/do-thuy-duong/avatar.webp",
+      "images/do-thuy-duong/anh_1.webp",
+      "images/do-thuy-duong/anh_2.webp",
+      "images/do-thuy-duong/anh_3.webp",
+      "images/do-thuy-duong/anh_4.webp",
+      "images/do-thuy-duong/anh_5.webp"
+    ],
     "youtubeId": "MwoNwRzx0Ak",
-    "cover": "Dành cho Nam",
-    "greeting": "Gửi Nam thân mến,",
+    "cover": "Dành cho Thuỳ Dương",
+    "greeting": "Gửi Thuỳ Dương thân mến,",
     "sign": "Thương mến ♥"
   },
   {
     "id": "7",
     "name": "Nguyễn Thuỳ Linh",
-    "nickname": "Linh Buri",
+    "nickname": "🦄",
     "photos": [
       "images/nguyen-thuy-linh/avatar.webp",
       "images/nguyen-thuy-linh/anh_1.webp",
@@ -110,10 +117,24 @@
   },
   {
     "id": "8",
-    "name": "Secret",
-    "youtubeId": "MwoNwRzx0Ak",
+    "name": "Đặng Công Minh",
+    "nickname": "Secret",
+    "secret": true,
+    "photos": [
+      "images/dang-cong-minh/avatar.webp",
+      "images/dang-cong-minh/anh_1.webp",
+      "images/dang-cong-minh/anh_2.webp",
+      "images/dang-cong-minh/anh_3.webp",
+      "images/dang-cong-minh/anh_4.webp",
+      "images/dang-cong-minh/anh_5.webp"
+    ],
+    "youtubeId": "Rb3hfEPyJxQ",
+    "musicStart": 12,
     "cover": "Secret",
-    "greeting": "Gửi bạn thân mến,",
+    "greeting": "Gửi Công Minh thân mến,",
+    "message": [
+      "Chúc Công Minh luôn tự tin sống thật với chính mình, được yêu thương đúng như bạn xứng đáng và mỗi ngày đều rực rỡ như cầu vồng. 🌈"
+    ],
     "sign": "Thương mến ♥"
   }
 ]

@@ -18,7 +18,8 @@ async function loadPerson() {
     ]);
     const p = people.find((x) => x.id === id);
     if (!p) return;
-    document.title = `Thiệp gửi ${p.name}`;
+    // "secret": true giấu tên thật trên tab trình duyệt; tên chỉ hiện trong thiệp khi mở
+    document.title = `Thiệp gửi ${p.secret ? p.nickname || 'Secret' : p.name}`;
     document.getElementById('cover-title').textContent = p.cover;
     document.getElementById('greeting').textContent = p.greeting;
     document.getElementById('sign').textContent = p.sign;
