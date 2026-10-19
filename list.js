@@ -34,6 +34,7 @@ function personItem(p, i) {
   const name = document.createElement('span');
   name.className = 'name';
   name.textContent = p.nickname || p.name; // biệt danh (nếu có) thay cho tên
+  if (p.nickname && p.nicknameColor) name.style.color = p.nicknameColor;
 
   a.append(img, name);
   li.append(a);

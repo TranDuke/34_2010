@@ -5,7 +5,7 @@ Trang web tĩnh gồm 2 màn:
 - `card.html?id=<id>` — tấm thiệp đóng, bấm (hoặc Enter/Space) để mở. Bên trong: ảnh bên trái, lời chúc bên phải.
 
 ## Tuỳ chỉnh
-- **Người nhận & lời chúc**: sửa `data/people.json`. Mỗi người gồm `id` (dùng trên URL), `name`, `nickname` (biệt danh hiện ở trang danh sách thay cho `name`, không bắt buộc), `secret` (`true` để giấu ảnh ở trang danh sách và tên thật trên tab trình duyệt — ảnh và tên chỉ hiện khi mở thiệp; nhớ đặt `cover` không lộ tên), `photo`, `youtubeId` (nhạc nền riêng), `cover` (chữ trên bìa), `greeting`, `message` (mảng các đoạn, không bắt buộc), `sign`.
+- **Người nhận & lời chúc**: sửa `data/people.json`. Mỗi người gồm `id` (dùng trên URL), `name`, `nickname` (biệt danh hiện ở trang danh sách thay cho `name`, không bắt buộc; thêm `nicknameColor`, vd. `"#c2185b"`, để tô màu biệt danh), `secret` (`true` để giấu ảnh ở trang danh sách và tên thật trên tab trình duyệt — ảnh và tên chỉ hiện khi mở thiệp; nhớ đặt `cover` không lộ tên), `photo`, `youtubeId` (nhạc nền riêng), `cover` (chữ trên bìa), `greeting`, `message` (mảng các đoạn, không bắt buộc), `sign`.
 - **Lời chúc ngẫu nhiên**: người không có `message` sẽ nhận 1 câu ngẫu nhiên trong `data/wishes.json` (100 câu chúc 20/10) mỗi lần mở trang. Thêm/sửa câu chúc trực tiếp trong file đó.
 - **Ảnh**: đặt ảnh vào `images/` (vd. `images/lan.jpg`) rồi sửa `photo` của người đó trong `data/people.json`.
 - **Nhiều ảnh**: dùng `photos` (mảng đường dẫn) thay cho `photo`. Ảnh có tên bắt đầu bằng `avatar` là ảnh chính (trên danh sách và trong thiệp); các ảnh còn lại được tải khi mở thiệp và bay ra nền xung quanh. Ảnh PNG đã tách nền trông đẹp nhất. Xem mẫu ở người đầu tiên (`images/vu-minh-anh/`).
