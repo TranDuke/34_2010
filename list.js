@@ -17,7 +17,8 @@ function personItem(p, i) {
   a.href = `card.html?id=${encodeURIComponent(p.id)}${VERSION ? `&v=${VERSION}` : ''}`;
 
   // Người không có ảnh hoặc "secret": true: hiện ô bí mật "?" thay cho ảnh
-  const src = p.secret ? null : mainPhoto(p);
+  // "listPhoto": ảnh riêng cho trang danh sách (trong thiệp vẫn dùng ảnh chính)
+  const src = p.secret ? null : p.listPhoto || mainPhoto(p);
   let img;
   if (src) {
     img = document.createElement('img');

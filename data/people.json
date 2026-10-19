@@ -68,6 +68,7 @@
     "id": "5",
     "name": "Nguyễn Thị Nguyệt",
     "nickname": "🌙",
+    "listPhoto": "images/nguyen-thi-nguyet/list.webp",
     "photos": [
       "images/nguyen-thi-nguyet/avatar.webp",
       "images/nguyen-thi-nguyet/anh_1.webp",
@@ -85,6 +86,7 @@
     "name": "Đỗ Thuỳ Dương",
     "nickname": "✚",
     "nicknameColor": "#c2185b",
+    "listPhoto": "images/do-thuy-duong/list.webp",
     "photos": [
       "images/do-thuy-duong/avatar.webp",
       "images/do-thuy-duong/anh_1.webp",
